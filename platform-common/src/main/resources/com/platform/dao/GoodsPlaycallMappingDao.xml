@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">    
+<mapper namespace="com.platform.dao.GoodsPlaycallMappingDao">
+
+	<insert id="save" parameterType="com.platform.entity.GoodsPlaycallNumEntity">
+		insert into nideshop_goods_playcall_mapping(user_id,goods_id,type)
+			values(#{userId},#{goodsId},#{type})
+	</insert>
+
+</mapper>
