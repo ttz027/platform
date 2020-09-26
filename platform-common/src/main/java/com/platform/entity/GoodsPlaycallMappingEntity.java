@@ -15,7 +15,7 @@ public class GoodsPlaycallMappingEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Integer userId;
-    private Integer godosId;
+    private Integer goodsId;
     private Integer type;
 
 }

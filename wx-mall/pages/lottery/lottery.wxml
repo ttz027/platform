@@ -1,0 +1,16 @@
+<view class="container">
+    <scroll-view class="topic-list" scroll-y="true" scroll-top="{{scrollTop}}">
+        <navigator class="item" wx:for="{{lotteryList}}" wx:key="{{item.id}}" url="../topicDetail/topicDetail?id={{item.id}}">
+            <image class="img" src="https://yanxuan.nosdn.127.net/14925200530030186.jpg"></image>
+            <view class="info">
+                 <text class="title">{{item.name}}</text>
+                <text class="title">{{item.prizeName}}免费拿</text>
+                <text class="desc">开奖时间：{{item.openTime}}</text>
+            </view>
+        </navigator>
+        <view class="page" wx:if="{{showPage}}">
+            <view class="prev {{ page <= 1 ? 'disabled' : ''}}" bindtap="prevPage">上一页</view>
+            <view class="next {{ (count / size) < page +1 ? 'disabled' : ''}}" bindtap="nextPage">下一页</view>
+        </view>
+    </scroll-view>
+</view>

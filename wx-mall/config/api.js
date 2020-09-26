@@ -75,4 +75,6 @@ module.exports = {
 
     HelpTypeList: API_BASE_URL + 'helpissue/typeList', //查看帮助类型列表
     HelpIssueList: API_BASE_URL + 'helpissue/issueList', //查看问题列表
+
+    LotteryList: API_BASE_URL + 'lottery/list', //
 };

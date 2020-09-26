@@ -1,4 +1,4 @@
-package com.platform.task;
+package com.platform.utils.quartz.task;
 
 import com.platform.entity.SysUserEntity;
 import com.platform.service.SysUserService;

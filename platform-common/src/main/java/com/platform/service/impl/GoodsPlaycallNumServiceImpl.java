@@ -37,7 +37,7 @@ public class GoodsPlaycallNumServiceImpl implements GoodsPlaycallNumService {
         }
         GoodsPlaycallMappingEntity mappingEntity = new GoodsPlaycallMappingEntity();
         mappingEntity.setUserId(userId);
-        mappingEntity.setGodosId(goodsId);
+        mappingEntity.setGoodsId(goodsId);
         mappingEntity.setType(type);
         try {
             goodsPlaycallNumDao.update(numEntity);

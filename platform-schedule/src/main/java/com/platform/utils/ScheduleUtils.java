@@ -4,6 +4,8 @@ import com.platform.entity.ScheduleJobEntity;
 import com.platform.utils.Constant.ScheduleStatus;
 import org.quartz.*;
 
+import java.util.Date;
+
 /**
  * 定时任务工具类
  *
@@ -146,4 +148,58 @@ public class ScheduleUtils {
             throw new RRException("删除定时任务失败", e);
         }
     }
+
+    /**
+     * 创建定时任务
+     */
+    public static void createScheduleJobByTime(Scheduler scheduler, ScheduleJobEntity scheduleJob) {
+        try {
+            //构建job信息
+            JobDetail jobDetail = JobBuilder.newJob(ScheduleJob.class).withIdentity(getJobKey(scheduleJob.getJobId())).build();
+
+            //按新的cronExpression表达式构建一个新的trigger
+            Trigger trigger = TriggerBuilder.newTrigger().withIdentity(getTriggerKey(scheduleJob.getJobId())).startAt(new Date()).build();
+
+            //放入参数，运行时的方法可以获取
+            jobDetail.getJobDataMap().put(ScheduleJobEntity.JOB_PARAM_KEY, scheduleJob);
+
+            scheduler.scheduleJob(jobDetail, trigger);
+
+            //暂停任务
+            if (scheduleJob.getStatus() == ScheduleStatus.PAUSE.getValue()) {
+                pauseJob(scheduler, scheduleJob.getJobId());
+            }
+        } catch (SchedulerException e) {
+            throw new RRException("创建定时任务失败", e);
+        }
+    }
+
+    public static void updateScheduleJobByTime(Scheduler scheduler, ScheduleJobEntity scheduleJob) {
+        try {
+            TriggerKey triggerKey = getTriggerKey(scheduleJob.getJobId());
+
+            //表达式调度构建器
+            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(scheduleJob.getCronExpression())
+                    .withMisfireHandlingInstructionDoNothing();
+
+            Trigger trigger = scheduler.getTrigger(getTriggerKey(scheduleJob.getJobId()));//getCronTrigger(scheduler, scheduleJob.getJobId());
+
+            //按新的cronExpression表达式重新构建trigger
+            trigger = trigger.getTriggerBuilder().withIdentity(triggerKey).startAt(new Date()).build();
+
+            //参数
+            trigger.getJobDataMap().put(ScheduleJobEntity.JOB_PARAM_KEY, scheduleJob);
+
+            scheduler.rescheduleJob(triggerKey, trigger);
+
+            //暂停任务
+            if (scheduleJob.getStatus() == ScheduleStatus.PAUSE.getValue()) {
+                pauseJob(scheduler, scheduleJob.getJobId());
+            }
+
+        } catch (SchedulerException e) {
+            throw new RRException("更新定时任务失败", e);
+        }
+    }
+
 }

@@ -5,6 +5,7 @@ import com.platform.annotation.LoginUser;
 import com.platform.entity.CollectVo;
 import com.platform.entity.UserVo;
 import com.platform.service.ApiCollectService;
+import com.platform.service.GoodsPlaycallNumService;
 import com.platform.util.ApiBaseAction;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -29,7 +30,8 @@ import java.util.Map;
 public class ApiCollectController extends ApiBaseAction {
     @Autowired
     private ApiCollectService collectService;
-
+    @Autowired
+    private GoodsPlaycallNumService playcallNumService;
     /**
      * 获取用户收藏
      */
@@ -75,10 +77,12 @@ public class ApiCollectController extends ApiBaseAction {
             collectEntity.setUser_id(loginUser.getUserId());
             //添加收藏
             collectRes = collectService.save(collectEntity);
+            playcallNumService.playCall(loginUser.getUserId().intValue(),valueId,2,1);
         } else {
             //取消收藏
             collectRes = collectService.delete(collectEntities.get(0).getId());
             handleType = "delete";
+            playcallNumService.playCall(loginUser.getUserId().intValue(),valueId,2,-1);
         }
 
         if (collectRes > 0) {
