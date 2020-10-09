@@ -103,7 +103,6 @@ var vm = new Vue({
         },
         saveOrUpdate: function (event) {
             var url = vm.lottery.id == null ? "../lottery/save" : "../lottery/update";
-            alert(url);
             Ajax.request({
                 type: "POST",
                 url: url,
@@ -239,9 +238,15 @@ var vm = new Vue({
 
             }
         },
-        getPrizeName: function(obj){
-            vm.lottery.prizeId = vm.lottery.prize.id;
-            vm.lottery.prizeName = vm.lottery.prize.name;
+        getPrizeName: function(id){
+            if(id==null || id==''){
+                return;
+            }
+            let obj = {};
+            obj = vm.goodss.find((item)=>{//model就是上面的数据源
+                return item.id === id;//筛选出匹配数据
+            });
+            vm.lottery.prizeName=obj.name;
         }
     }
 });

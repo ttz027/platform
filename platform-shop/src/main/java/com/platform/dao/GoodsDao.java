@@ -11,4 +11,6 @@ import com.platform.entity.GoodsEntity;
  */
 public interface GoodsDao extends BaseDao<GoodsEntity> {
     Integer queryMaxId();
+
+    Integer updateGoodsNum(GoodsEntity goodsEntity);
 }

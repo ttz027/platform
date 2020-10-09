@@ -20,8 +20,6 @@ import java.util.Map;
 public class ActivityLotteryServiceImpl implements ActivityLotteryService {
     @Autowired
     private ActivityLotteryDao dao;
-    @Autowired
-    private Scheduler scheduler;
 
     @Override
     public ActivityLotteryEntity queryObject(Integer id) {

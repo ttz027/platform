@@ -7,13 +7,19 @@ import com.platform.utils.Query;
 import com.platform.utils.R;
 import com.platform.utils.quartz.QuartzUtils;
 import com.platform.utils.quartz.ScheduleJobBean;
+import com.platform.utils.quartz.SignUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.quartz.CronTrigger;
 import org.quartz.Scheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.PostConstruct;
+import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 
 @RestController
@@ -30,6 +36,12 @@ public class ActivityLotteryController {
     @RequestMapping("/list")
     @RequiresPermissions("lottery:list")
     public R list(@RequestParam Map<String, Object> params) {
+        /*LocalDate today = LocalDate.now();
+        System.out.println("当月签到情况：");
+        Map<String, Boolean> signInfo = new TreeMap<>(SignUtil.getSignInfo(1000, today));
+        for (Map.Entry<String, Boolean> entry : signInfo.entrySet()) {
+            System.out.println(entry.getKey() + ": " + (entry.getValue() ? "√" : "-"));
+        }*/
         //查询列表数据
         Query query = new Query(params);
 
@@ -114,6 +126,24 @@ public class ActivityLotteryController {
         List<ActivityLotteryEntity> list = lotteryService.queryList(params);
 
         return R.ok().put("list", list);
+    }
+
+    /**
+     * 项目启动时，初始化定时器
+     */
+    @PostConstruct
+    public void init() {
+        try {
+            Map<String,Object> map=new HashMap<>();
+            map.put("lotteryStatus",0);
+            List<ActivityLotteryEntity> activityLotteryEntities = lotteryService.queryList(map);
+            for (ActivityLotteryEntity b:activityLotteryEntities) {
+                createZeroTimeJob(b);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("eroro:in ActivityLotteryController/init");
+        }
     }
 
     public void createZeroTimeJob(ActivityLotteryEntity zeroBuy) throws Exception {

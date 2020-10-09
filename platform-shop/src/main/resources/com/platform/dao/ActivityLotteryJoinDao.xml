@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.ActivityLotteryJoinDao">
+    <sql id="alRow">
+        id,user_id,lottery_id,create_time,status
+    </sql>
+    <select id="queryList" resultType="com.platform.entity.ActivityLotteryJoinEntity">
+        select
+        <include refid="alRow"></include>
+        from nideshop_activity_lottery_join
+        <where>
+            <if test="lotteryId != null ">
+               and  lottery_id = #{lotteryId}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryObject" resultType="com.platform.entity.ActivityLotteryJoinEntity">
+        select
+        <include refid="alRow"></include>
+        from nideshop_activity_lottery_join
+        where id = #{id}
+    </select>
+
+
+
+    <update id="updateStatus" parameterType="Map">
+        update nideshop_activity_lottery_join
+        <set>
+            <if test="status != null">`status` = #{status},</if>
+        </set>
+        <where>
+            <if test="lotteryId != null">
+                lottery_id = #{lotteryId}
+            </if>
+            <if test="ids != null">
+                and id in
+                <foreach item="id" collection="ids" open="(" separator="," close=")">
+                    #{id}
+                </foreach>
+            </if>
+        </where>
+    </update>
+
+    <select id="queryIds" resultType="java.lang.Integer">
+        select
+        id
+        from nideshop_activity_lottery_join
+        <where>
+            <if test="lotteryId != null ">
+                and  lottery_id = #{lotteryId}
+            </if>
+        </where>
+    </select>
+
+
+
+</mapper>

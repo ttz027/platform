@@ -258,4 +258,10 @@
     <select id="queryMaxId" resultType="java.lang.Integer" parameterType="map">
         SELECT MAX(id) FROM nideshop_goods
     </select>
+
+    <update id="updateGoodsNum" parameterType="com.platform.entity.GoodsEntity">
+        update nideshop_goods
+            set `goods_number` = goods_number+#{goodsNumber}
+        where id = #{id}
+    </update>
 </mapper>

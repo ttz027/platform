@@ -56,8 +56,8 @@
                 </Radio-group>
             </Form-item>
             <Form-item label="奖品">
-                <i-select v-model="lottery.prize" filterable @on-change="getPrizeName(this)"><!--multiple-->
-                    <i-option v-for="goods in goodss" :value="goods" :key="goods.id">{{goods.name}}</i-option>
+                <i-select v-model="lottery.prizeId" filterable  @on-change="getPrizeName($event)">
+                    <i-option v-for="goods in goodss" :value="goods.id" :key="goods.id">{{goods.name}}</i-option>
                 </i-select>
             </Form-item>
             <Form-item label="上线时间" prop="onlineTime">

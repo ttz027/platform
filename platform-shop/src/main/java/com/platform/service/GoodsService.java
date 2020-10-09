@@ -93,4 +93,9 @@ public interface GoodsService {
      * @return
      */
     int unSale(Integer id);
+
+    /**
+     * 扣库存
+     */
+    int updateGoodsNum(GoodsEntity goods);
 }

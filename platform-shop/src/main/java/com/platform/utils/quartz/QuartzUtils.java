@@ -1,12 +1,14 @@
 package com.platform.utils.quartz;
 
+import com.platform.utils.SpringContextHolder;
 import org.quartz.*;
+import org.quartz.impl.StdScheduler;
 
 public class QuartzUtils {
-
+//	private static Scheduler scheduler = SpringContextHolder.getBean(Scheduler.class);
 	/**
 	 * 添加定时任务
-	 * @param job,type(1售卖机任务，2免单活动任务,3-0元购更具时间进行执行,5-0元购作废)
+	 * @param
 	 * @throws Exception
 	 */
 	public static void addJob(Scheduler scheduler, ScheduleJobBean job, int type) throws Exception {

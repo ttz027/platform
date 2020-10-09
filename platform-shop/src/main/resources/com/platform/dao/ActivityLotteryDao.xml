@@ -32,7 +32,9 @@
             <if test="name != null and name.trim() != ''">
                and  name LIKE concat('%',#{name},'%')
             </if>
-
+            <if test="lotteryStatus != null">
+                and  lottery_status = #{lotteryStatus}
+            </if>
         <if test="offset != null and limit != null">
             limit #{offset}, #{limit}
         </if>
